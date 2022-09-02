@@ -1,11 +1,11 @@
 import { useWeb3Contract } from "react-moralis"
-import genshinNftabi from "../constants/pokemonNftAbi.json"
-import networkAddresses from "../constants/pokemonNftAbi.json"
+import networkAddresses from "../constants/networkAddresses.json"
+import genshinNftabi from "../constants/genshinNftAbi.json"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
 import { ethers } from "ethers"
-import { useNotification } from "web3uikit"
-import { Button } from "web3uikit"
+import { useNotification } from "@web3uikit/core"
+import { Button } from "@web3uikit/core"
 import Image from "next/image"
 import { paimon } from "../assets/index"
 
@@ -84,12 +84,13 @@ const Mint = () => {
     })
 
     const updateUI = async () => {
-        setMintFee((await getMintFee()).toString())
-        setWishCounter((await getsWishCounter()).toString())
-        setThreeStarCounter((await getThreeStarCounter()).toString())
-        setFourStarCounter((await getFourStarCounter()).toString())
-        setFiveStarCounter((await getFiveStarCounter()).toString())
-        setTotalMinted((await getTokenCounter()).toString())
+        const mintFeeFromCall = await getMintFee()
+        setMintFee(mintFeeFromCall)
+        setWishCounter(await getWishCounter())
+        setThreeStarCounter(await getThreeStarCounter())
+        setFourStarCounter(await getFourStarCounter())
+        setFiveStarCounter(await getFiveStarCounter())
+        setTotalMinted(await getTokenCounter())
     }
 
     useEffect(() => {
@@ -118,7 +119,12 @@ const Mint = () => {
         <section>
             <div>
                 <Image src={paimon} />
-                <p></p>
+                <p>
+                    This is for demo purposes to show a gacha system on a blockchain. All trademarks
+                    and copyrights belong to Hoyoverse. Press Wish Button below to mint an NFT.
+                    Every 10th mint guarantees a 4 Star or above. Please click details for more
+                    info.
+                </p>
             </div>
             <div>
                 {genshinAddress ? (
@@ -131,7 +137,7 @@ const Mint = () => {
                                 onError: (error) => console.log(error),
                             })
                         }
-                        text="Primary Button"
+                        text="Wish"
                         theme="outline"
                     />
                 ) : (
@@ -142,6 +148,17 @@ const Mint = () => {
                         </p>
                     </div>
                 )}
+            </div>
+            <div>
+                <h4>Stats</h4>
+                <ul>
+                    <li>Wish(Mint) Price: {mintFee} ETH</li>
+                    <li>Wish Counter: {wishCounter}</li>
+                    <li>Total 3 Stars: {threeStarCounter}</li>
+                    <li>Total 4 Stars: {fourStarCounter}</li>
+                    <li>Total 5 Stars: {fiveStarCounter}</li>
+                    <li>Total Minted: {totalMinted}</li>
+                </ul>
             </div>
         </section>
     )

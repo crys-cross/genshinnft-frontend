@@ -1,7 +1,7 @@
 import "../styles/globals.css"
 import Head from "next/head"
 import { MoralisProvider } from "react-moralis"
-import { NotificationProvider } from "web3uikit"
+import { NotificationProvider } from "@web3uikit/core"
 
 function MyApp({ Component, pageProps }) {
     return (
