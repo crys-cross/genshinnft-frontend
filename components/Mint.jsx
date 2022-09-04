@@ -13,7 +13,8 @@ const Mint = () => {
     const { Moralis, isWeb3Enabled, chainId: chainIdHex } = useMoralis()
     console.log(parseInt(chainIdHex))
     const chainId = parseInt(chainIdHex)
-    const genshinAddress = chainId in networkAddresses ? networkAddresses[chainId][0] : null
+    const genshinAddress =
+        chainId in networkAddresses ? networkAddresses[chainId]["WishNft"][0] : null
     const [mintFee, setMintFee] = useState("0")
     const [wishCounter, setWishCounter] = useState("0")
     const [threeStarCounter, setThreeStarCounter] = useState("0")
@@ -84,13 +85,18 @@ const Mint = () => {
     })
 
     const updateUI = async () => {
-        const mintFeeFromCall = await getMintFee()
+        const mintFeeFromCall = (await getMintFee()).toString()
         setMintFee(mintFeeFromCall)
-        setWishCounter(await getWishCounter())
-        setThreeStarCounter(await getThreeStarCounter())
-        setFourStarCounter(await getFourStarCounter())
-        setFiveStarCounter(await getFiveStarCounter())
-        setTotalMinted(await getTokenCounter())
+        const wishCounterFromCall = (await getWishCounter()).toString()
+        setWishCounter(wishCounterFromCall)
+        const threeStarFromCall = (await getThreeStarCounter()).toString()
+        setThreeStarCounter(threeStarFromCall)
+        const fourStarFromCall = (await getFourStarCounter()).toString()
+        setFourStarCounter(fourStarFromCall)
+        const fiveStarFromCall = (await getFiveStarCounter()).toString()
+        setFiveStarCounter(fiveStarFromCall)
+        const totalMintedFromCall = (await getTokenCounter()).toString()
+        setTotalMinted(totalMintedFromCall)
     }
 
     useEffect(() => {
@@ -152,7 +158,7 @@ const Mint = () => {
             <div>
                 <h4>Stats</h4>
                 <ul>
-                    <li>Wish(Mint) Price: {mintFee} ETH</li>
+                    <li>Wish(Mint) Price: {ethers.utils.formatUnits(mintFee, "ether")} ETH</li>
                     <li>Wish Counter: {wishCounter}</li>
                     <li>Total 3 Stars: {threeStarCounter}</li>
                     <li>Total 4 Stars: {fourStarCounter}</li>
