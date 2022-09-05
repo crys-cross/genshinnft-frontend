@@ -15,6 +15,7 @@ const Mint = () => {
     const chainId = parseInt(chainIdHex)
     const genshinAddress =
         chainId in networkAddresses ? networkAddresses[chainId]["WishNft"][0] : null
+    console.log(`Working with contract address: ${genshinAddress}`)
     const [mintFee, setMintFee] = useState("0")
     const [wishCounter, setWishCounter] = useState("0")
     const [threeStarCounter, setThreeStarCounter] = useState("0")
@@ -70,13 +71,6 @@ const Mint = () => {
         params: {},
     })
 
-    const { runContractFunction: getsWishCounter } = useWeb3Contract({
-        abi: genshinNftabi,
-        contractAddress: genshinAddress,
-        functionName: "getsWishCounter",
-        params: {},
-    })
-
     const { runContractFunction: getTokenCounter } = useWeb3Contract({
         abi: genshinNftabi,
         contractAddress: genshinAddress,
@@ -123,16 +117,18 @@ const Mint = () => {
 
     return (
         <section>
-            <div>
-                <Image src={paimon} />
-                <p>
-                    This is for demo purposes to show a gacha system on a blockchain. All trademarks
-                    and copyrights belong to Hoyoverse. Press Wish Button below to mint an NFT.
-                    Every 10th mint guarantees a 4 Star or above. Please click details for more
-                    info.
-                </p>
+            <div className="flex md:flex-row flex-col-reverse sm:py-16 py-6">
+                <Image src={paimon} alt="paimon" className="w-[100%] h-[100%] relative z-[5]" />
+                <div className="flex-1 flex justify-center items-start flex-col">
+                    <p className="font-normal text-dimWhite text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
+                        This is for demo purposes to show a gacha system on a blockchain. All
+                        trademarks and copyrights belong to Hoyoverse. Press Wish Button below to
+                        mint an NFT. Every 10th mint guarantees a 4 Star or above. Please click
+                        details for more info.
+                    </p>
+                </div>
             </div>
-            <div>
+            <div className="flex flex-col items-center py-10">
                 {genshinAddress ? (
                     <Button
                         onClick={async () =>
@@ -143,6 +139,7 @@ const Mint = () => {
                                 onError: (error) => console.log(error),
                             })
                         }
+                        size="xl"
                         text="Wish"
                         theme="outline"
                     />
@@ -155,15 +152,30 @@ const Mint = () => {
                     </div>
                 )}
             </div>
-            <div>
+            <div className="flex flex-col items-center">
                 <h4>Stats</h4>
                 <ul>
-                    <li>Wish(Mint) Price: {ethers.utils.formatUnits(mintFee, "ether")} ETH</li>
-                    <li>Wish Counter: {wishCounter}</li>
-                    <li>Total 3 Stars: {threeStarCounter}</li>
-                    <li>Total 4 Stars: {fourStarCounter}</li>
-                    <li>Total 5 Stars: {fiveStarCounter}</li>
-                    <li>Total Minted: {totalMinted}</li>
+                    <li>
+                        Wish(Mint) Price: &nbsp;&nbsp;{ethers.utils.formatUnits(mintFee, "ether")}{" "}
+                        ETH
+                    </li>
+                    <li>Wish Counter: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{wishCounter}</li>
+                    <li>
+                        Total 3 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {threeStarCounter}
+                    </li>
+                    <li>
+                        Total 4 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {fourStarCounter}
+                    </li>
+                    <li>
+                        Total 5 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {fiveStarCounter}
+                    </li>
+                    <li>
+                        Total Minted: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {totalMinted}
+                    </li>
                 </ul>
             </div>
         </section>
