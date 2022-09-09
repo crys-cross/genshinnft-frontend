@@ -8,6 +8,7 @@ import { useNotification } from "@web3uikit/core"
 import { Button } from "@web3uikit/core"
 import Image from "next/image"
 import { paimon } from "../assets/index"
+import Link from "next/link"
 
 const Mint = () => {
     const { Moralis, isWeb3Enabled, chainId: chainIdHex } = useMoralis()
@@ -120,11 +121,14 @@ const Mint = () => {
             <div className="flex md:flex-row flex-col-reverse sm:py-16 py-6">
                 <Image src={paimon} alt="paimon" className="w-[100%] h-[100%] relative z-[5]" />
                 <div className="flex-1 flex justify-center items-start flex-col">
-                    <p className="font-normal text-dimWhite text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
+                    <p className="indent-5 font-medium text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
                         This is for demo purposes to show a gacha system on a blockchain. All
                         trademarks and copyrights belong to Hoyoverse. Press Wish Button below to
-                        mint an NFT. Every 10th mint guarantees a 4 Star or above. Please click
-                        details for more info.
+                        mint an NFT. Every 10th mint guarantees a 4 Star or above. Please click{" "}
+                        <Link href="/details">
+                            <a className="cursor-pointer hover:text-white">details</a>
+                        </Link>{" "}
+                        for more info.
                     </p>
                 </div>
             </div>
@@ -142,6 +146,10 @@ const Mint = () => {
                         size="xl"
                         text="Wish"
                         theme="outline"
+                        isLoading={isLoading || isFetching ? true : false}
+                        loadingText={
+                            <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full mr-4"></div>
+                        }
                     />
                 ) : (
                     <div>
@@ -153,27 +161,41 @@ const Mint = () => {
                 )}
             </div>
             <div className="flex flex-col items-center">
-                <h4>Stats</h4>
+                <h4 className="font-medium">INFO</h4>
                 <ul>
-                    <li>
-                        Wish(Mint) Price: &nbsp;&nbsp;{ethers.utils.formatUnits(mintFee, "ether")}{" "}
+                    <li className="flex flex-row">
+                        <div className="font-semibold">Wish(Mint) Price: &nbsp;&nbsp;</div>
+                        {ethers.utils.formatUnits(mintFee, "ether")}
                         ETH
                     </li>
-                    <li>Wish Counter: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{wishCounter}</li>
-                    <li>
-                        Total 3 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li className="flex flex-row">
+                        <div className="font-semibold">
+                            Wish Counter: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        {wishCounter}
+                    </li>
+                    <li className="flex flex-row">
+                        <div className="font-semibold">
+                            Total 3 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
                         {threeStarCounter}
                     </li>
-                    <li>
-                        Total 4 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li className="flex flex-row">
+                        <div className="font-semibold">
+                            Total 4 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
                         {fourStarCounter}
                     </li>
-                    <li>
-                        Total 5 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li className="flex flex-row">
+                        <div className="font-semibold">
+                            Total 5 Stars: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
                         {fiveStarCounter}
                     </li>
-                    <li>
-                        Total Minted: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li className="flex flex-row">
+                        <div className="font-semibold">
+                            Total Minted: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
                         {totalMinted}
                     </li>
                 </ul>
