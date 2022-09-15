@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export default function Home() {
     return (
-        <div className="bg-gray-400 min-h-screen">
+        <div className="bg-slate-300 min-h-screen">
             <div className={`sm:px-16 px-6 flex flex-col justify-center items-center`}>
                 <p className="indent-5 font-medium text-dimWhite text-[18px] leading-[30.8px] max-w-[470px] mt-20 px-2">
                     All assests here are from chibi arts across the internet and are credited in the
