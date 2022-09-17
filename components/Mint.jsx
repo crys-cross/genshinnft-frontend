@@ -1,9 +1,9 @@
-import { useWeb3Contract } from "react-moralis"
+import { useMoralisQuery, useWeb3Contract } from "react-moralis"
 import networkAddresses from "../constants/networkAddresses.json"
 import genshinNftabi from "../constants/genshinNftAbi.json"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
-import { ethers } from "ethers"
+import { ethers, getSigners } from "ethers"
 import { useNotification } from "@web3uikit/core"
 import { Button } from "@web3uikit/core"
 import Image from "next/image"
@@ -23,7 +23,10 @@ const Mint = () => {
     const [fourStarCounter, setFourStarCounter] = useState("0")
     const [fiveStarCounter, setFiveStarCounter] = useState("0")
     const [totalMinted, setTotalMinted] = useState("0")
+    // const [character, setCharacter] = useState("0")
     const dispatch = useNotification()
+    // const { data } = useMoralisQuery("NftMinted")
+    // console.log(JSON.stringify(data))
 
     const {
         runContractFunction: wishBannerNft,
@@ -79,6 +82,15 @@ const Mint = () => {
         params: {},
     })
 
+    // const checkEvent = async () => {
+    //     web3 = Moralis.enableWeb3({ provider: "web3Auth", chainId: chainId, clientId: "reducted" })
+    //     const signers = web3.getSigners()
+    //     const contract = await new ethers.Contract(genshinAddress, genshinNftabi, signers)
+    //     contract.on("NftMinted", (playersCharacter, characterOwner) => {
+    //         return playersCharacter.toString()
+    //     })
+    // }
+
     const updateUI = async () => {
         const mintFeeFromCall = (await getMintFee()).toString()
         setMintFee(mintFeeFromCall)
@@ -92,6 +104,8 @@ const Mint = () => {
         setFiveStarCounter(fiveStarFromCall)
         const totalMintedFromCall = (await getTokenCounter()).toString()
         setTotalMinted(totalMintedFromCall)
+        // const characterCall = checkEvent()
+        // setCharacter(characterCall)
     }
 
     useEffect(() => {
@@ -101,16 +115,19 @@ const Mint = () => {
     }, [isWeb3Enabled])
 
     const handleSuccess = async (tx) => {
-        await tx.wait(1)
-        handleSuccessNotification(tx)
+        const txReceipt = await tx.wait(1)
+        const event = txReceipt.events[1]
+        const value = event.args[0]
+        const character = value.toString()
+        handleSuccessNotification(character)
         updateUI()
     }
 
-    const handleSuccessNotification = () => {
+    const handleSuccessNotification = (character) => {
         dispatch({
-            type: "sucess",
-            message: "Entered Successfully",
-            title: "Tx Notification",
+            type: "success",
+            message: `Congratulations! NFT ID: ${character}`,
+            title: "Character Wished",
             position: "topR",
             icon: "bell",
         })
@@ -137,7 +154,7 @@ const Mint = () => {
                     <Button
                         onClick={async () =>
                             await wishBannerNft({
-                                // onComplete:
+                                // onComplete: handleSuccess,
                                 // onError:
                                 onSuccess: handleSuccess,
                                 onError: (error) => console.log(error),
