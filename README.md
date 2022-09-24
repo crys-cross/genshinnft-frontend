@@ -1,7 +1,7 @@
 ##Dapp link
 
-    Please visit link below to test the dapp.
-    DAPP: https://snowy-shadow-7712.on.fleek.co/
+-Please visit link below to test the dapp.
+-DAPP: https://snowy-shadow-7712.on.fleek.co/
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
